@@ -14,14 +14,20 @@ import { useAuthStore } from '@/store/authStore';
 // Change this URL when deploying to production
 // Option 1: Set NEXT_PUBLIC_API_URL in .env.local
 // Option 2: Update the default value below
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+export const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
 // ============================================
 // AXIOS INSTANCE CONFIGURATION
 // ============================================
 const createApiInstance = (): AxiosInstance => {
+  // Append /api to the base URL since backend uses /api prefix
+  const baseURL = API_BASE_URL.endsWith('/api') 
+    ? API_BASE_URL 
+    : `${API_BASE_URL}/api`;
+  
   const instance = axios.create({
-    baseURL: API_BASE_URL,
+    baseURL,
     headers: {
       'Content-Type': 'application/json',
     },
